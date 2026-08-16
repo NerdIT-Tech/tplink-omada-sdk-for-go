@@ -189,7 +189,7 @@ jobs:
       - name: Install tparse
         run: |
           go install github.com/mfridman/tparse@v0.18.0
-          echo "$(go env GOPATH)/bin" >> $GITHUB_PATH
+          echo "$(go env GOPATH)/bin" >> "$GITHUB_PATH"
       - name: Run Tests & Report
         run: .github/scripts/report-tests.sh
         id: test-run

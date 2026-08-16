@@ -38,10 +38,11 @@ var _ absauth.AccessTokenProvider = (*StaticTokenProvider)(nil)
 // accessToken. allowedHosts restricts which hosts the token may be sent to; pass no
 // hosts to allow any host.
 func NewStaticTokenProvider(accessToken string, allowedHosts ...string) *StaticTokenProvider {
-	return &StaticTokenProvider{
-		token:     accessToken,
-		validator: absauth.NewAllowedHostsValidator(allowedHosts),
-	}
+	p := &StaticTokenProvider{token: accessToken}
+	// allowedHosts are bare hostnames (see the doc comment above), never a full URL
+	// with a scheme, so this cannot fail.
+	_ = p.validator.SetAllowedHostsErrorCheck(allowedHosts)
+	return p
 }
 
 // SetToken updates the token used for subsequent requests, e.g. after the
@@ -114,14 +115,17 @@ func NewClientCredentialsTokenProvider(baseURL, clientID, clientSecret, omadacID
 	if u, err := url.Parse(baseURL); err == nil && u.Host != "" {
 		allowedHosts = append(allowedHosts, u.Host)
 	}
-	return &ClientCredentialsTokenProvider{
+	p := &ClientCredentialsTokenProvider{
 		baseURL:      strings.TrimRight(baseURL, "/"),
 		clientID:     clientID,
 		clientSecret: clientSecret,
 		omadacID:     omadacID,
 		httpClient:   httpClient,
-		validator:    absauth.NewAllowedHostsValidator(allowedHosts),
 	}
+	// allowedHosts comes from url.URL.Host, which never contains a scheme, so this
+	// cannot fail.
+	_ = p.validator.SetAllowedHostsErrorCheck(allowedHosts)
+	return p
 }
 
 // GetAuthorizationToken returns a valid access token, fetching or refreshing it as
@@ -181,7 +185,7 @@ func (p *ClientCredentialsTokenProvider) requestToken(ctx context.Context, grant
 	if err != nil {
 		return fmt.Errorf("omada auth: requesting token: %w", err)
 	}
-	defer resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
 	respBody, err := io.ReadAll(resp.Body)
 	if err != nil {

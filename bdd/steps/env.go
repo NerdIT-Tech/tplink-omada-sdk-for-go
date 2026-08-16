@@ -25,7 +25,7 @@ type testEnv struct {
 func loadTestEnv() (*testEnv, error) {
 	values := map[string]string{}
 	if f, err := os.Open(filepath.Join("..", "..", ".env")); err == nil {
-		defer f.Close()
+		defer func() { _ = f.Close() }()
 		scanner := bufio.NewScanner(f)
 		for scanner.Scan() {
 			line := strings.TrimSpace(scanner.Text())
@@ -79,7 +79,7 @@ func discoverOmadacID(ctx context.Context, httpClient *http.Client, baseURL stri
 	if err != nil {
 		return "", err
 	}
-	defer resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
 	var info controllerInfo
 	if err := json.NewDecoder(resp.Body).Decode(&info); err != nil {

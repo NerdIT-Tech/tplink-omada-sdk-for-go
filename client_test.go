@@ -42,7 +42,7 @@ func getSites(t *testing.T, baseURL, accessToken string) (int32, string, error) 
 // error. Without normalization the caller only sees a generic, unhelpful
 // "unexpected status code" error with none of that detail.
 func TestErrorEnvelopeNormalization_NonStandardStatus(t *testing.T) {
-	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusUnauthorized)
 		_, _ = w.Write([]byte(`{"msg":"Open API Authorized failed, please check whether the input parameters are legal.","errorCode":-44116}`))
@@ -66,7 +66,7 @@ func TestErrorEnvelopeNormalization_NonStandardStatus(t *testing.T) {
 // generic error page for a malformed request) — it must not be rewritten to a
 // fabricated success.
 func TestErrorEnvelopeNormalization_NonEnvelopeStatus(t *testing.T) {
-	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusBadRequest)
 		_, _ = w.Write([]byte(`{"timestamp":1,"status":400,"error":"Bad Request","path":"/openapi/v1/x/sites"}`))
@@ -82,7 +82,7 @@ func TestErrorEnvelopeNormalization_NonEnvelopeStatus(t *testing.T) {
 // TestErrorEnvelopeNormalization_SuccessPassthrough confirms normal 200 responses are
 // unaffected.
 func TestErrorEnvelopeNormalization_SuccessPassthrough(t *testing.T) {
-	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusOK)
 		_, _ = w.Write([]byte(`{"errorCode":0,"msg":"Success.","result":{"totalRows":0,"currentPage":1,"currentSize":10,"data":[]}}`))
@@ -110,7 +110,7 @@ func TestResponseNormalization_MissingContentType(t *testing.T) {
 	// connection to write a truly header-bare raw response, matching what the live
 	// controller was observed to send.
 	body := `{"msg":"Controller ID not exist.","errorCode":-7131}`
-	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
 		conn, buf, err := w.(http.Hijacker).Hijack()
 		if err != nil {
 			t.Fatalf("hijack: %v", err)
@@ -138,7 +138,7 @@ func TestResponseNormalization_MissingContentType(t *testing.T) {
 // controller an unauthenticated request.
 func TestEmptyAccessTokenFailsFast(t *testing.T) {
 	called := false
-	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
 		called = true
 		w.WriteHeader(http.StatusOK)
 	}))

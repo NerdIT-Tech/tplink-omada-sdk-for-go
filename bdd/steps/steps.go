@@ -19,6 +19,8 @@ import (
 	"github.com/cucumber/godog"
 )
 
+// InitializeScenario registers every step definition used by the .feature files
+// under bdd/features against sc, wiring them to a shared *omadaWorld per scenario.
 func InitializeScenario(sc *godog.ScenarioContext) {
 	var w *omadaWorld
 
@@ -64,7 +66,7 @@ func InitializeScenario(sc *godog.ScenarioContext) {
 		return nil
 	})
 
-	sc.Step(`^a client configured with an empty access token$`, func(ctx context.Context) error {
+	sc.Step(`^a client configured with an empty access token$`, func(_ context.Context) error {
 		client, err := sdk.NewWithAccessToken(w.env.BaseURL, "", w.insecureHTTPClient())
 		if err != nil {
 			return err

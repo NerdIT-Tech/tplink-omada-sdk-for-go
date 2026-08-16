@@ -1,3 +1,7 @@
+// Package tplinkomadasdkforgo is a Go SDK for the TP-Link Omada Controller Open
+// API. NewWithClientCredentials and NewWithAccessToken construct an
+// *OmadaApiClient; every generated endpoint is then reachable through its fluent
+// Openapi() builder chain.
 package tplinkomadasdkforgo
 
 import (
