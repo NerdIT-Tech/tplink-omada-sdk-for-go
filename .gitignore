@@ -33,3 +33,8 @@ go.work.sum
 
 # Kiota generation log (kiota-lock.json is kept for reproducible regeneration)
 .kiota.log
+
+# Controller-fetched OpenAPI description (see docs/contributor/regenerating-the-sdk.md
+# for where to get a fresh copy) -- not committed, only kiota-lock.json and the
+# generated output are.
+omada-open-api-sec.json

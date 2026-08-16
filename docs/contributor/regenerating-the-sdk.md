@@ -4,7 +4,15 @@ sidebar_position: 2
 
 # Regenerating the SDK
 
-The client is generated with the Kiota CLI from `omada-open-api-sec.json`:
+The client is generated with the Kiota CLI from `omada-open-api-sec.json`, the
+controller's own OpenAPI description. That file isn't committed to the repo — fetch a
+fresh copy from a reachable controller before regenerating:
+
+```sh
+curl -o omada-open-api-sec.json https://{controller-url}/v3/api-docs
+```
+
+Then:
 
 ```sh
 kiota generate \
