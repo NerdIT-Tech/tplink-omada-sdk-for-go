@@ -1,0 +1,20 @@
+# Fallback owner for everything.
+# TODO: confirm this is the right GitHub handle/team for NerdIT-Tech/tplink-omada-sdk-for-go.
+* @michaeldcanady
+
+# Require owner review on CI/CD and automation changes.
+/.github/ @michaeldcanady
+
+# Authentication and credential handling.
+/auth/ @michaeldcanady
+
+# Hand-written transport/client layer (as opposed to the generated openapi/models code).
+/client.go @michaeldcanady
+/client_test.go @michaeldcanady
+/omada_api_client.go @michaeldcanady
+
+# Module dependency changes.
+/go.mod @michaeldcanady
+/go.sum @michaeldcanady
+/bdd/go.mod @michaeldcanady
+/bdd/go.sum @michaeldcanady

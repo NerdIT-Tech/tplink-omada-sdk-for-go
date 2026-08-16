@@ -30,3 +30,6 @@ go.work.sum
 # Editor/IDE
 # .idea/
 # .vscode/
+
+# Kiota generation log (kiota-lock.json is kept for reproducible regeneration)
+.kiota.log
