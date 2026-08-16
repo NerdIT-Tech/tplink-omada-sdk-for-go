@@ -1,0 +1,41 @@
+version: "2"
+
+run:
+  timeout: 5m
+
+linters:
+  default: standard
+  enable:
+    - errcheck
+    - govet
+    - staticcheck
+    - unused
+    - ineffassign
+    - misspell
+    - unconvert
+    - gocritic
+    - revive
+  exclusions:
+    paths:
+      # Kiota-generated request builders and models: not hand-maintained, and
+      # regenerating on every upstream OpenAPI change would otherwise force
+      # constant lint-fix churn.
+      - openapi/.*
+      - models/.*
+    rules:
+      - path: _test\.go
+        linters:
+          - errcheck
+
+formatters:
+  enable:
+    - gofmt
+    - goimports
+  exclusions:
+    paths:
+      - openapi/.*
+      - models/.*
+
+issues:
+  max-issues-per-linter: 0
+  max-same-issues: 0

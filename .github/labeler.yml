@@ -1,0 +1,61 @@
+# Path-based PR labeling config for actions/labeler.
+
+"area: auth":
+    - changed-files:
+          - any-glob-to-any-file: "auth/**"
+
+"area: client":
+    - changed-files:
+          - any-glob-to-any-file:
+                - "client.go"
+                - "client_test.go"
+                - "omada_api_client.go"
+
+"area: openapi (generated)":
+    - changed-files:
+          - any-glob-to-any-file: "openapi/**"
+
+"area: models (generated)":
+    - changed-files:
+          - any-glob-to-any-file: "models/**"
+
+"area: bdd":
+    - changed-files:
+          - any-glob-to-any-file: "bdd/**"
+
+"area: website":
+    - changed-files:
+          - any-glob-to-any-file:
+                - "website/**"
+                - "docs/**"
+
+"type: documentation":
+    - changed-files:
+          - any-glob-to-any-file:
+                - "**/*.md"
+                - "QA_REPORT.md"
+
+"type: devops":
+    - changed-files:
+          - any-glob-to-any-file:
+                - ".github/workflows/**"
+                - ".github/scripts/**"
+                - ".github/dependabot.yml"
+                - ".github/labeler.yml"
+                - ".golangci.yml"
+                - ".yamllint.yml"
+                - ".devcontainer/**"
+
+"type: deps":
+    - changed-files:
+          - any-glob-to-any-file:
+                - "go.mod"
+                - "go.sum"
+                - "bdd/go.mod"
+                - "bdd/go.sum"
+
+"spec":
+    - changed-files:
+          - any-glob-to-any-file:
+                - "omada-open-api-sec.json"
+                - "kiota-lock.json"
