@@ -219,7 +219,10 @@ jobs:
         uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f # v7
         with:
           files: ./${{ env.COVERAGE_FILE }}
-          fail_ci_if_error: true
+          # Dependabot- and fork-triggered pull_request runs don't get repo
+          # secrets, so CODECOV_TOKEN is unavailable there and upload fails
+          # on this protected branch. Don't let that block the Test check.
+          fail_ci_if_error: false
           token: ${{ secrets.CODECOV_TOKEN }}
 
   govulncheck:
@@ -251,6 +254,7 @@ jobs:
     needs: [changes]
     if: ${{ needs.changes.outputs.code == 'true' }}
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     permissions:
       contents: read
       security-events: write
