@@ -116,7 +116,7 @@ func (t *omadaResponseNormalizingTransport) RoundTrip(req *http.Request) (*http.
 	}
 
 	body, readErr := io.ReadAll(resp.Body)
-	resp.Body.Close()
+	_ = resp.Body.Close()
 	if readErr != nil {
 		resp.Body = io.NopCloser(bytes.NewReader(nil))
 		return resp, nil

@@ -157,7 +157,7 @@ type authorizeRequestBody struct {
 }
 
 func (p *ClientCredentialsTokenProvider) authorize(ctx context.Context) error {
-	body, err := json.Marshal(authorizeRequestBody{
+	body, err := json.Marshal(authorizeRequestBody{ // #nosec G117 -- ClientSecret is the runtime-provided OAuth client secret being marshaled into the token request body, not a hardcoded credential
 		OmadacID:     p.omadacID,
 		ClientID:     p.clientID,
 		ClientSecret: p.clientSecret,
