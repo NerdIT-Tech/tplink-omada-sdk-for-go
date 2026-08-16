@@ -1,8 +1,9 @@
 name: "CodeQL"
-
+# PR-only + weekly by design: main is protected (no direct pushes), so every
+# commit that reaches main already passed this exact scan against its PR
+# head. Re-scanning on push to main would just repeat that work; the weekly
+# schedule keeps the default-branch baseline fresh instead.
 on:
-  push:
-    branches: ["main"]
   pull_request:
     branches: ["main"]
     paths:
