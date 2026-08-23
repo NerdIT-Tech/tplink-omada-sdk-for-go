@@ -281,7 +281,7 @@ jobs:
       - name: Run gosec
         run: gosec -no-fail -fmt sarif -out ${{ github.workspace }}/gosec-${{ matrix.module == '.' && 'root' || matrix.module }}.sarif ./...
       - name: Upload SARIF
-        uses: github/codeql-action/upload-sarif@f3712979fa5f215279b101dd0a2e3bdfb4353324 # v3.37.7
+        uses: github/codeql-action/upload-sarif@ff2f1c621b7f889edc0d3c761ac2e6a3f8cdb0dd # v4.37.7
         with:
           sarif_file: gosec-${{ matrix.module == '.' && 'root' || matrix.module }}.sarif
           category: gosec-${{ matrix.module == '.' && 'root' || matrix.module }}
